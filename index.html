@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feliz Aniversário!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d0036 100%);
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            position: relative;
+            color: #fff;
+        }
+        
+        .card {
+            width: 90%;
+            max-width: 500px;
+            background: rgba(20, 0, 30, 0.8);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(101, 0, 155, 0.3);
+            text-align: center;
+            border: 1px solid #6a3093;
+            backdrop-filter: blur(5px);
+            z-index: 10;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        h1 {
+            font-family: 'Pacifico', cursive;
+            color: #b967ff;
+            margin-bottom: 30px; /* Mais espaço abaixo do título */
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px rgba(185, 103, 255, 0.5);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .show-text {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+            transition: all 0.5s ease-out;
+        }
+        
+        /* CONTAINER DO BOLO - CENTRALIZADO */
+        .cake-container {
+            margin: 20px 0 0; /* Espaço acima e abaixo */
+            position: relative;
+            width: 200px;
+            height: 150px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        /* BOLO */
+        .cake {
+            width: 180px;
+            height: 90px;
+            position: relative;
+        }
+        
+        .cake-base {
+            width: 180px;
+            height: 60px;
+            background: #4a1a6a;
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 
+                inset 0 -8px 0 rgba(0,0,0,0.2),
+                inset 0 -12px 0 #6a3093,
+                0 8px 15px rgba(0,0,0,0.3);
+        }
+        
+        .cake-top {
+            width: 200px;
+            height: 25px;
+            background: #6a3093;
+            border-radius: 50% 50% 0 0;
+            position: absolute;
+            top: -12px;
+            left: -10px;
+            box-shadow: 
+                inset 0 8px 0 rgba(255,255,255,0.1),
+                0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .cake-decoration {
+            position: absolute;
+            width: 100%;
+            height: 12px;
+            background: #b967ff;
+            top: 50%;
+            transform: translateY(-50%);
+            box-shadow: 
+                inset 0 2px 0 rgba(255,255,255,0.2),
+                inset 0 -2px 0 rgba(0,0,0,0.2);
+        }
+        
+        /* VELA */
+        .candle {
+            width: 10px;
+            height: 40px;
+            background: linear-gradient(to right, #444, #666, #444);
+            position: absolute;
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            border-radius: 3px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            box-shadow: 
+                inset 1px 0 0 rgba(255,255,255,0.1),
+                inset -1px 0 0 rgba(0,0,0,0.3);
+        }
+        
+        .show-candle {
+            opacity: 1 !important;
+        }
+        
+        .flame {
+            width: 16px;
+            height: 32px;
+            background: #ffef80;
+            border-radius: 50% 50% 20% 20%;
+            position: absolute;
+            top: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            filter: blur(2px);
+            opacity: 0;
+            box-shadow: 
+                0 0 15px #ffef80,
+                0 0 30px #ff9da0,
+                0 0 50px #b967ff;
+        }
+        
+        .show-flame {
+            opacity: 1 !important;
+            animation: flicker 0.3s infinite alternate;
+        }
+        
+        @keyframes flicker {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.1); }
+        }
+        
+        button {
+            background: linear-gradient(45deg, #6a3093, #b967ff);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(106, 48, 147, 0.6);
+            font-weight: bold;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(185, 103, 255, 0.8);
+        }
+        
+        /* LUZES DE FUNDO */
+        .lights {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .light {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(185, 103, 255, 0.2), transparent 70%);
+            border-radius: 50%;
+            filter: blur(30px);
+            opacity: 0;
+            transition: opacity 1s;
+        }
+        
+        .show-lights .light {
+            opacity: 1;
+        }
+        
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite ease-in-out;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+        
+        /* BALÕES - COMEÇAM DE BAIXO E SOBEM */
+        .balloon {
+            position: fixed;
+            width: 50px;
+            height: 70px;
+            border-radius: 50%;
+            opacity: 0;
+            filter: drop-shadow(0 0 5px rgba(185, 103, 255, 0.7));
+            z-index: 5;
+            bottom: -100px;
+            transition: opacity 0.5s, bottom 6s linear;
+        }
+        
+        .show-balloon {
+            opacity: 1 !important;
+            bottom: calc(100vh + 100px) !important;
+        }
+        
+        .balloon-string {
+            position: absolute;
+            width: 2px;
+            background: rgba(255, 255, 255, 0.3);
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    <div class="lights" id="lights"></div>
+    <div id="balloons-container"></div>
+    
+    <div class="card">
+        <h1 id="birthdayText">Feliz Aniversário!</h1>
+
+        <br/>
+        <br/>
+        
+        <div class="cake-container">
+            <div class="candle" id="candle"></div>
+            <div class="flame" id="flame"></div>
+            <div class="cake">
+                <div class="cake-base"></div>
+                <div class="cake-top"></div>
+                <div class="cake-decoration"></div>
+            </div>
+        </div>
+        
+        <button id="celebrateBtn">Começar Celebração!</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const birthdayText = document.getElementById('birthdayText');
+            const candle = document.getElementById('candle');
+            const flame = document.getElementById('flame');
+            const celebrateBtn = document.getElementById('celebrateBtn');
+            const balloonsContainer = document.getElementById('balloons-container');
+            const lightsContainer = document.getElementById('lights');
+            const starsContainer = document.getElementById('stars');
+            
+            const purpleShades = ['#6a3093', '#b967ff', '#8a2be2', '#9932cc', '#9400d3'];
+            let firstClick = true;
+            
+            // Criar estrelas de fundo
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                star.style.width = `${Math.random() * 2 + 1}px`;
+                star.style.height = star.style.width;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 2}s`;
+                starsContainer.appendChild(star);
+            }
+            
+            // Criar luzes de fundo
+            for (let i = 0; i < 4; i++) {
+                const light = document.createElement('div');
+                light.classList.add('light');
+                light.style.left = `${Math.random() * 100}%`;
+                light.style.top = `${Math.random() * 100}%`;
+                lightsContainer.appendChild(light);
+                
+                // Animação leve para as luzes
+                animateLight(light);
+            }
+            
+            // FUNÇÃO DO BOTÃO
+            celebrateBtn.addEventListener('click', function() {
+                // Primeiro clique - mostrar elementos básicos
+                if (firstClick) {
+                    birthdayText.classList.add('show-text');
+                    candle.classList.add('show-candle');
+                    flame.classList.add('show-flame');
+                    lightsContainer.classList.add('show-lights');
+                    firstClick = false;
+                    this.textContent = 'Mais Balões!';
+                }
+                
+                // Criar e lançar 7 balões
+                launchBalloons(7);
+            });
+            
+            function launchBalloons(count) {
+                for (let i = 0; i < count; i++) {
+                    setTimeout(() => {
+                        const balloon = createBalloon();
+                        balloonsContainer.appendChild(balloon);
+                        
+                        // Mostrar balão (começa de baixo)
+                        setTimeout(() => {
+                            balloon.style.bottom = '-100px'; // Posição inicial abaixo da tela
+                            balloon.style.opacity = '1';
+                            
+                            // Animação para subir
+                            setTimeout(() => {
+                                balloon.style.bottom = 'calc(100vh + 100px)';
+                            }, 10);
+                        }, i * 150);
+                        
+                        // Remover balão após animação
+                        setTimeout(() => {
+                            balloon.remove();
+                        }, 6000);
+                    }, i * 200);
+                }
+            }
+            
+            function createBalloon() {
+                const balloon = document.createElement('div');
+                balloon.className = 'balloon';
+                balloon.style.left = `${Math.random() * 80 + 10}%`;
+                balloon.style.bottom = '-100px';
+                balloon.style.backgroundColor = purpleShades[Math.floor(Math.random() * purpleShades.length)];
+                balloon.style.transitionDuration = `${5 + Math.random() * 2}s`; // 5-7 segundos
+                
+                const string = document.createElement('div');
+                string.className = 'balloon-string';
+                string.style.height = `${Math.random() * 40 + 30}px`;
+                balloon.appendChild(string);
+                
+                return balloon;
+            }
+            
+            function animateLight(light) {
+                const duration = Math.random() * 15000 + 10000;
+                const xMove = Math.random() * 200 - 100;
+                const yMove = Math.random() * 200 - 100;
+                
+                light.style.transition = `left ${duration}ms ease-in-out, top ${duration}ms ease-in-out`;
+                light.style.left = `${parseFloat(light.style.left) + xMove}px`;
+                light.style.top = `${parseFloat(light.style.top) + yMove}px`;
+                
+                setTimeout(() => {
+                    animateLight(light);
+                }, duration);
+            }
+        });
+    </script>
+</body>
+</html>
